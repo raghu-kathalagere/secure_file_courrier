@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% block title %}File · {{ file.filename }}{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+  <div class="col-12 d-flex justify-content-between align-items-center">
+    <div>
+      <h3 class="text-info mb-1">
+        <i class="bi bi-file-earmark-lock"></i> File Details
+      </h3>
+      <p class="text-muted mb-0 small">
+        {{ file.filename }}
+      </p>
+    </div>
+    <a href="{{ url_for('files.dashboard') }}" class="btn btn-outline-secondary btn-sm">
+      <i class="bi bi-arrow-left"></i> Back
+    </a>
+  </div>
+</div>
+
+<div class="card cyber-card p-4 mb-4">
+  <h5 class="text-info mb-3">
+    <i class="bi bi-info-circle"></i> File Info
+  </h5>
+
+  <p class="mb-2"><strong>Filename:</strong> {{ file.filename }}</p>
+  <p class="mb-2"><strong>Owner:</strong> {{ file.owner.email }}</p>
+
+  <p class="mb-2">
+    <strong>Status:</strong>
+    {% if file.revoked %}
+      <span class="badge bg-danger">Revoked</span>
+    {% else %}
+      <span class="badge bg-success">Active</span>
+    {% endif %}
+  </p>
+
+  {% if recipients %}
+  <p class="mb-2"><strong>Authorized Recipients:</strong></p>
+  <ul class="small">
+    {% for user in recipients %}
+      <li>{{ user.email }}</li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+</div>
+
+<div class="card cyber-card p-4">
+  <h5 class="text-info mb-3">
+    <i class="bi bi-tools"></i> Actions
+  </h5>
+
+  <div class="d-flex gap-2 flex-wrap">
+
+    {% if not file.revoked %}
+      <a href="{{ url_for('files.download', file_id=file.id) }}"
+         class="btn btn-info">
+        <i class="bi bi-download"></i> Download
+      </a>
+    {% endif %}
+
+    {% if is_owner and not file.revoked %}
+      <form
+        method="POST"
+        action="{{ url_for('files.revoke', file_id=file.id) }}"
+        onsubmit="return confirm('Revoke this file? This action cannot be undone.')"
+      >
+        <button type="submit" class="btn btn-danger">
+          <i class="bi bi-x-circle"></i> Revoke
+        </button>
+      </form>
+    {% endif %}
+
+    {% if is_owner %}
+      <a href="{{ url_for('files.logs', file_id=file.id) }}"
+         class="btn btn-outline-secondary">
+        <i class="bi bi-activity"></i> Access Logs
+      </a>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

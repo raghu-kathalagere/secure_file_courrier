@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block title %}Login · Secure File Courier{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-5 col-lg-4">
+    <div class="card border-secondary shadow-lg cyber-card">
+      <div class="card-body">
+        <h3 class="card-title mb-3 text-center text-info">
+          <i class="bi bi-shield-lock"></i> Login
+        </h3>
+        <p class="text-muted text-center small">
+          Authenticate to access your encrypted file vault.
+        </p>
+
+        <form method="POST" novalidate>
+          {{ form.hidden_tag() }}
+
+          <!-- Email -->
+          <div class="mb-3">
+            {{ form.email.label(class="form-label") }}
+            {{ form.email(class="form-control", placeholder="you@example.com") }}
+            {% for error in form.email.errors %}
+              <div class="text-danger small">{{ error }}</div>
+            {% endfor %}
+          </div>
+
+          <!-- Password with eye -->
+          <div class="mb-3">
+            {{ form.password.label(class="form-label") }}
+
+            <div class="input-group">
+              {{ form.password(class="form-control", id="login_password", placeholder="Password") }}
+              <button
+                type="button"
+                class="btn btn-outline-secondary password-toggle"
+                data-target="login_password"
+                tabindex="-1"
+              >
+                <i class="bi bi-eye"></i>
+              </button>
+            </div>
+
+            {% for error in form.password.errors %}
+              <div class="text-danger small">{{ error }}</div>
+            {% endfor %}
+          </div>
+
+          <!-- Remember me -->
+          <div class="mb-3 form-check">
+            {{ form.remember(class="form-check-input", id="remember_me") }}
+            {{ form.remember.label(class="form-check-label", for="remember_me") }}
+          </div>
+
+          <div class="d-grid">
+            {{ form.submit(class="btn btn-info fw-semibold") }}
+          </div>
+        </form>
+
+        <hr class="border-secondary my-4">
+
+        <p class="mb-0 text-center">
+          Need an account?
+          <a href="{{ url_for('auth.register') }}" class="link-info">Register</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

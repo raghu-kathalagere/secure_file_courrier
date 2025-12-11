@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+{% block title %}Register · Secure File Courier{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-6 col-lg-5">
+    <div class="card border-secondary shadow-lg cyber-card">
+      <div class="card-body">
+        <h3 class="card-title mb-3 text-center text-info">
+          <i class="bi bi-person-plus"></i> Create Secure Account
+        </h3>
+        <p class="text-muted text-center small">
+          A unique RSA keypair will be generated for end-to-end encryption.
+        </p>
+
+        <form method="POST" novalidate>
+          {{ form.hidden_tag() }}
+
+          <!-- Email -->
+          <div class="mb-3">
+            {{ form.email.label(class="form-label") }}
+            {{ form.email(class="form-control", placeholder="you@example.com") }}
+            {% for error in form.email.errors %}
+              <div class="text-danger small">{{ error }}</div>
+            {% endfor %}
+          </div>
+
+          <!-- Team / Group -->
+          <div class="mb-3">
+            {{ form.team_name.label(class="form-label") }}
+            {{ form.team_name(class="form-control", placeholder="e.g. RedTeam, DevOps, CS-Dept-A") }}
+            {% for error in form.team_name.errors %}
+              <div class="text-danger small">{{ error }}</div>
+            {% endfor %}
+          </div>
+
+          <!-- Password with eye + strength -->
+          <div class="mb-3">
+            {{ form.password.label(class="form-label") }}
+
+            <div class="input-group">
+              {{ form.password(class="form-control", id="password", placeholder="Minimum 8 characters") }}
+              <button
+                type="button"
+                class="btn btn-outline-secondary password-toggle"
+                data-target="password"
+                tabindex="-1"
+              >
+                <i class="bi bi-eye"></i>
+              </button>
+            </div>
+
+            {% for error in form.password.errors %}
+              <div class="text-danger small">{{ error }}</div>
+            {% endfor %}
+
+            <!-- Strength meter -->
+            <div class="mt-2">
+              <div class="progress password-strength-bar d-none" style="height: 6px;">
+                <div
+                  class="progress-bar"
+                  id="password-strength-bar"
+                  role="progressbar"
+                  style="width: 0%;"
+                ></div>
+              </div>
+              <small id="password-strength-text" class="text-muted"></small>
+            </div>
+          </div>
+
+          <!-- Confirm password with eye -->
+          <div class="mb-3">
+            {{ form.confirm_password.label(class="form-label") }}
+
+            <div class="input-group">
+              {{ form.confirm_password(class="form-control", id="confirm_password", placeholder="Retype password") }}
+              <button
+                type="button"
+                class="btn btn-outline-secondary password-toggle"
+                data-target="confirm_password"
+                tabindex="-1"
+              >
+                <i class="bi bi-eye"></i>
+              </button>
+            </div>
+
+            {% for error in form.confirm_password.errors %}
+              <div class="text-danger small">{{ error }}</div>
+            {% endfor %}
+          </div>
+
+          <div class="d-grid">
+            {{ form.submit(class="btn btn-info fw-semibold") }}
+          </div>
+        </form>
+
+        <hr class="border-secondary my-4">
+
+        <p class="mb-0 text-center">
+          Already have an account?
+          <a href="{{ url_for('auth.login') }}" class="link-info">Login</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

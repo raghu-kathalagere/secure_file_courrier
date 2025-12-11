@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}Upload · Secure File Courier{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-8 col-lg-6">
+    <div class="card cyber-card p-4">
+      <h3 class="text-info mb-3">
+        <i class="bi bi-cloud-upload"></i> Upload Encrypted File
+      </h3>
+      <p class="text-muted small">
+        Your file will be encrypted with AES-256-GCM, and the file key will be
+        wrapped using RSA for each authorized recipient (including you as owner).
+      </p>
+
+      <form method="POST" enctype="multipart/form-data" novalidate>
+        {{ form.hidden_tag() }}
+
+        <div class="mb-3">
+          <label class="form-label">File</label>
+          {{ form.file(class="form-control") }}
+          {% for error in form.file.errors %}
+            <div class="text-danger small">{{ error }}</div>
+          {% endfor %}
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Authorized Recipients</label>
+          {{ form.recipients(class="form-select", multiple=True, size=5) }}
+          <div class="form-text text-muted">
+            Hold <code>Ctrl</code> (Windows/Linux) or <code>Cmd</code> (macOS) to select multiple users.
+          </div>
+          {% for error in form.recipients.errors %}
+            <div class="text-danger small">{{ error }}</div>
+          {% endfor %}
+        </div>
+
+        <div class="d-grid">
+          {{ form.submit(class="btn btn-info fw-semibold") }}
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

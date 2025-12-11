@@ -1,0 +1,21 @@
+body {
+    background: radial-gradient(circle at top, #111827, #020617);
+    min-height: 100vh;
+  }
+  
+  .cyber-card {
+    background: rgba(15, 23, 42, 0.95);
+    border-radius: 1rem;
+    border: 1px solid rgba(148, 163, 184, 0.5);
+    backdrop-filter: blur(8px);
+  }
+  
+  .navbar {
+    backdrop-filter: blur(6px);
+  }
+  
+  .btn-info {
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  

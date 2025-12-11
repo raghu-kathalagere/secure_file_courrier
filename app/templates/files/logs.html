@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block title %}Logs · {{ file.filename }}{% endblock %}
+
+{% block content %}
+<div class="row mb-3">
+  <div class="col-12 d-flex justify-content-between align-items-center">
+    <div>
+      <h3 class="text-info mb-1">
+        <i class="bi bi-activity"></i> Access Logs
+      </h3>
+      <p class="text-muted mb-0 small">
+        File: <span class="text-warning">{{ file.filename }}</span>
+      </p>
+    </div>
+    <a href="{{ url_for('files.file_detail', file_id=file.id) }}" class="btn btn-outline-secondary btn-sm">
+      <i class="bi bi-arrow-left"></i> Back
+    </a>
+  </div>
+</div>
+
+<div class="card cyber-card">
+  <div class="card-body">
+    {% if events %}
+      <div class="table-responsive">
+        <table class="table table-sm table-dark align-middle mb-0">
+          <thead>
+            <tr>
+              <th>Time (UTC)</th>
+              <th>User</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for e in events %}
+            <tr>
+              <td>{{ e.created_at }}</td>
+              <td>{{ e.user.email if e.user else 'Unknown' }}</td>
+              <td>
+                {% if e.action == "UPLOAD" %}
+                  <span class="badge bg-info">UPLOAD</span>
+                {% elif e.action == "DOWNLOAD" %}
+                  <span class="badge bg-success">DOWNLOAD</span>
+                {% elif e.action == "REVOKE" %}
+                  <span class="badge bg-danger">REVOKE</span>
+                {% else %}
+                  <span class="badge bg-secondary">{{ e.action }}</span>
+                {% endif %}
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <p class="text-muted mb-0 small">No events recorded yet.</p>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
